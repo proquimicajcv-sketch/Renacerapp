@@ -1,0 +1,6 @@
+{
+  "name": "Renacer Postparto",
+  "description": "Rehabilitación física y emocional postparto en el hogar: suelo pélvico, respiración diafragmática, diástasis y bienestar maternal.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

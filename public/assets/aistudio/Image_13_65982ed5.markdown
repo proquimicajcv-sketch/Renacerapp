@@ -1,0 +1,222 @@
+---
+name: Renacer Postparto
+colors:
+  surface: '#fef8f4'
+  surface-dim: '#ded9d5'
+  surface-bright: '#fef8f4'
+  surface-container-lowest: '#ffffff'
+  surface-container-low: '#f8f3ef'
+  surface-container: '#f2ede9'
+  surface-container-high: '#ece7e3'
+  surface-container-highest: '#e6e2de'
+  on-surface: '#1d1b19'
+  on-surface-variant: '#55433e'
+  inverse-surface: '#32302e'
+  inverse-on-surface: '#f5f0ec'
+  outline: '#88726c'
+  outline-variant: '#dbc1ba'
+  surface-tint: '#99452d'
+  primary: '#96432b'
+  on-primary: '#ffffff'
+  primary-container: '#b55b41'
+  on-primary-container: '#fffbff'
+  inverse-primary: '#ffb5a0'
+  secondary: '#41674c'
+  on-secondary: '#ffffff'
+  secondary-container: '#c2edcb'
+  on-secondary-container: '#466d52'
+  tertiary: '#7f5042'
+  on-tertiary: '#ffffff'
+  tertiary-container: '#9b6859'
+  on-tertiary-container: '#fffbff'
+  error: '#ba1a1a'
+  on-error: '#ffffff'
+  error-container: '#ffdad6'
+  on-error-container: '#93000a'
+  primary-fixed: '#ffdbd1'
+  primary-fixed-dim: '#ffb5a0'
+  on-primary-fixed: '#3b0900'
+  on-primary-fixed-variant: '#7a2f18'
+  secondary-fixed: '#c2edcb'
+  secondary-fixed-dim: '#a7d1b0'
+  on-secondary-fixed: '#00210f'
+  on-secondary-fixed-variant: '#294e36'
+  tertiary-fixed: '#ffdbd0'
+  tertiary-fixed-dim: '#f5b8a6'
+  on-tertiary-fixed: '#321207'
+  on-tertiary-fixed-variant: '#663c2e'
+  background: '#fef8f4'
+  on-background: '#1d1b19'
+  surface-variant: '#e6e2de'
+typography:
+  display-lg:
+    fontFamily: Newsreader
+    fontSize: 40px
+    fontWeight: '500'
+    lineHeight: 48px
+    letterSpacing: -0.02em
+  display-lg-mobile:
+    fontFamily: Newsreader
+    fontSize: 32px
+    fontWeight: '500'
+    lineHeight: 40px
+    letterSpacing: -0.01em
+  headline-lg:
+    fontFamily: Newsreader
+    fontSize: 28px
+    fontWeight: '600'
+    lineHeight: 36px
+    letterSpacing: -0.01em
+  headline-md:
+    fontFamily: Newsreader
+    fontSize: 24px
+    fontWeight: '500'
+    lineHeight: 32px
+  headline-sm:
+    fontFamily: Plus Jakarta Sans
+    fontSize: 20px
+    fontWeight: '600'
+    lineHeight: 28px
+  body-lg:
+    fontFamily: Plus Jakarta Sans
+    fontSize: 17px
+    fontWeight: '400'
+    lineHeight: 26px
+  body-md:
+    fontFamily: Plus Jakarta Sans
+    fontSize: 15px
+    fontWeight: '400'
+    lineHeight: 22px
+  body-sm:
+    fontFamily: Plus Jakarta Sans
+    fontSize: 13px
+    fontWeight: '400'
+    lineHeight: 18px
+  label-lg:
+    fontFamily: Plus Jakarta Sans
+    fontSize: 14px
+    fontWeight: '600'
+    lineHeight: 20px
+    letterSpacing: 0.01em
+  label-md:
+    fontFamily: Plus Jakarta Sans
+    fontSize: 12px
+    fontWeight: '600'
+    lineHeight: 16px
+    letterSpacing: 0.02em
+  label-sm:
+    fontFamily: Plus Jakarta Sans
+    fontSize: 11px
+    fontWeight: '500'
+    lineHeight: 14px
+    letterSpacing: 0.03em
+rounded:
+  sm: 0.25rem
+  DEFAULT: 0.5rem
+  md: 0.75rem
+  lg: 1rem
+  xl: 1.5rem
+  full: 9999px
+spacing:
+  gutter: 1rem
+  gutter-tablet: 1.5rem
+  gutter-desktop: 2rem
+  margin: 1.25rem
+  margin-tablet: 2rem
+  margin-desktop: 3rem
+  space-xs: 0.25rem
+  space-sm: 0.5rem
+  space-md: 1rem
+  space-lg: 1.5rem
+  space-xl: 2.5rem
+---
+
+## Brand & Style
+
+### Brand Personality & Core Narrative
+This design system embodies maternal physical and emotional rehabilitation in the comfort of home. Grounded in the ethos of *"Armonía entre fuerza, salud y maternidad desde el hogar"*, the visual language balances clinical credibility with profound empathy and domestic warmth. Postpartum care demands an environment devoid of sterile hospital detachment or aggressive fitness tropes; it requires nurturing reassurance, measured pacing, and quiet strength.
+
+### Emotional Resonance
+The UI evokes feelings of safety, steady physical restoration, non-judgmental accompaniment, and serene clarity. Users navigating sleep deprivation and bodily vulnerability should encounter zero visual friction, abrasive contrasts, or cognitive overload.
+
+### Aesthetic Movement
+The aesthetic synthesizes **warm organic minimalism** with **tactile softness**. Surfaces are warm linen, cream, and unbleached porcelain rather than cold electronic whites. Structural boundaries rely on delicate tonal shifts and warm hairline dividers reminiscent of anatomical golden-ratio geometries, reflecting the spiral motif and feminine human movement captured in the emblem.
+
+## Colors
+
+### Palette Philosophy
+The palette draws straight from natural pigments, earthen pottery, botanical calm, and human skin tones:
+
+- **Primary (`#B85D43` / Coral Clay / Terracotta):** Represents vital inner warmth, resilience, and pelvic core rebuilding. Used for key call-to-actions, energetic milestones, and interactive focal points.
+- **Secondary (`#5B8266` / Botanical Sage):** Evokes healing, breathwork, calm rehabilitation, and restorative physical therapy. Ideal for completed states, clinical validation tags, restorative exercise markers, and gentle alerts.
+- **Tertiary (`#E3A896` / Soft Shell Coral):** A delicate tint for active highlights, background chips, badge backdrops, and progress track fills.
+- **Neutral Base (`#FBF8F3` Canvas, `#F4EFEB` Surface Container, `#FFFFFF` Card Elevated):** Rich, unbleached almond, parchment, and warm sand. Avoids cold `#000000` or sterile `#F8F9FA`.
+- **Text & Foreground (`#2D2926` Primary Slate Umber, `#57514B` Secondary Warm Muted):** Deep charcoal with warm umber undertones to maintain contrast ratios compliant with WCAG AAA while eliminating harsh retinal glare.
+
+## Typography
+
+### Editorial & Humanist Pairing
+The typographic hierarchy balances literary dignity with clean legibility:
+
+- **Display & Section Titles (`Newsreader`):** An organic, sculpted serif font that captures the grace and timeless dignity of motherhood. Used for motivational greetings, clinical program titles, and mindfulness prompts.
+- **Body, UI, & Metrics (`Plus Jakarta Sans`):** A soft, humanist geometric sans-serif featuring open counters and balanced curves. It offers effortless legibility for tired eyes, whether scanning postpartum exercise instructions, symptom trackers, or scheduled routines.
+- **Numerals & Metrics:** Large metrics (e.g., minutes rested, pelvic floor cycle counts) use `Newsreader` in medium weight for an artisanal, deliberate feeling rather than an intimidating gym stopwatch aesthetic.
+
+## Layout & Spacing
+
+### Mobile-First Fluid Harmony
+Designed primarily as an adaptive web application optimized for one-handed mobile use while holding a baby:
+
+- **Column System:** 
+  - **Mobile (<640px):** 4-column fluid layout with `1.25rem` screen margins and `1rem` gutters. Interactive triggers and primary CTAs are locked to the comfortable thumb zone at the screen base.
+  - **Tablet (640px–1024px):** 8-column layout with `2rem` margins, allowing split modules for exercise guidance alongside clinical notes.
+  - **Desktop (>1024px):** Max container width capped at `1040px` centered to maintain intimacy and prevent wide eye tracking fatigue.
+- **Rhythm & Whitespace:** Generous vertical breathing room (`space-lg` and `space-xl`) prevents sensory overload. Elements do not compete for space; cards maintain comfortable internal padding (`1.25rem` to `1.5rem`).
+
+## Elevation & Depth
+
+### Ambient Warmth & Diffused Layering
+The design rejects standard cold drop shadows and harsh skeuomorphism in favor of soft ambient warmth:
+
+- **Surface Tiers:** 
+  - **Base Canvas:** `#FBF8F3` (warm parchment linen).
+  - **Container Low:** `#F4EFEB` (recessed sections, exercise breakdown trays).
+  - **Elevated Card Surface:** `#FFFFFF` (pristine yet warm white).
+- **Ambient Shadow Character:** Tinted with warm umber rather than cold pitch black.
+  - *Resting Card Elevation:* `box-shadow: 0 4px 20px -2px rgba(87, 81, 75, 0.05), 0 2px 6px -1px rgba(87, 81, 75, 0.03);`
+  - *Floating Modal / Active Sheet:* `box-shadow: 0 16px 36px -4px rgba(45, 41, 38, 0.08), 0 6px 12px -2px rgba(45, 41, 38, 0.04);`
+- **Hairline Framing:** Subtle borders using `rgba(91, 130, 102, 0.12)` or `rgba(184, 93, 67, 0.12)` create delicate, intentional outlines reminiscent of the golden ratio guiding lines in the brand mark.
+
+## Shapes
+
+### Organic Curvilinear Language
+Reflecting the spiral and maternal anatomy from the identity:
+- **Component Radii:** A base corner radius of `0.5rem` (`8px`) scales up to `1rem` (`16px`) for cards and interactive panels, and `1.5rem` (`24px`) for wellness containers and bottom drawer sheets.
+- **Full Pills (`9999px`):** Reserved for badges, status chips, routine category selectors, and primary action buttons, conveying touchable softness without sharp corners.
+
+## Components
+
+### Buttons
+- **Primary CTA:** Full-pill shaped, background `#B85D43`, text `#FFFFFF`, with high-contrast font `Plus Jakarta Sans` 600 weight. Soft micro-scaling (`transform: scale(0.98)`) and warm shadow expansion on active press.
+- **Secondary (Restorative/Clinical):** Full-pill, soft Sage outline `border: 1.5px solid #5B8266`, background transparent or `#5B8266` at 8% opacity, text `#40634D`.
+- **Tertiary / Ghost:** No border, text `#57514B`, subtle warm underline or background `#F4EFEB` on hover.
+
+### Badges & Category Chips
+- Pill contours with gentle background washes.
+- *Clinical Tag:* Background `#5B8266` at 12% opacity, text `#40634D`, paired with a petite dot indicator.
+- *Trimester / Recovery Week:* Background `#B85D43` at 10% opacity, text `#B85D43`.
+
+### Interactive Cards
+- `#FFFFFF` surface resting on `#FBF8F3` base. Generous `1.25rem` padding, `16px` border-radius (`rounded-lg`), surrounded by subtle warm ambient shadow.
+- Header incorporates `Newsreader` titles with metadata chips docked at the top right.
+
+### Input Fields & Selectors
+- Background `#FFFFFF` with a warm border `1px solid rgba(87, 81, 75, 0.2)`. Focus state smoothly transitions the ring to `#B85D43` with a soft 3px diffused outer halo (`rgba(184, 93, 67, 0.15)`). Label placed above in `label-md` uppercase warm umber.
+
+### Checkboxes, Radios & Switches
+- Rounded organic check handles. Checked state shifts from muted neutral to filled `#5B8266` (Sage Green) for health tracking habits, accompanied by a clean cream-colored check icon.
+- Toggles feature an elongated capsule with a gentle warm stone thumb that slides smoothly.
+
+### Gentle Progress States & Trackers
+- Pelvic rehabilitation and recovery bars use smooth, rounded end-caps. Track background is `#F4EFEB`, while the active fill features a fluid gradient from `#E3A896` to `#B85D43` (or calm `#5B8266` for rest/breathwork modules).
+- Daily recovery radial trackers employ thin, elegant track strokes reminiscent of the emblem's golden spiral.

@@ -1,0 +1,81 @@
+@import "tailwindcss";
+
+@theme {
+  --font-serif: "Newsreader", Georgia, serif;
+  --font-display: "Newsreader", Georgia, serif;
+  --font-sans: "Plus Jakarta Sans", system-ui, -apple-system, sans-serif;
+  --color-renacer-primary: #96432b;
+  --color-renacer-primary-hover: #803722;
+  --color-renacer-terracotta: #b85d43;
+  --color-renacer-secondary: #41674c;
+  --color-renacer-sage: #5b8266;
+  --color-renacer-sage-light: #c2edcb;
+  --color-renacer-sage-soft: #edf5ef;
+  --color-renacer-coral: #e3a896;
+  --color-renacer-coral-soft: #ffdbd1;
+  --color-renacer-bg: #fef8f4;
+  --color-renacer-surface: #fbf8f3;
+  --color-renacer-surface-low: #f8f3ef;
+  --color-renacer-surface-container: #f2ede9;
+  --color-renacer-surface-high: #ece7e3;
+  --color-renacer-text: #1d1b19;
+  --color-renacer-muted: #55433e;
+  --color-renacer-outline: #dbc1ba;
+}
+
+body {
+  background-color: #fef8f4;
+  color: #1d1b19;
+  font-family: "Plus Jakarta Sans", system-ui, -apple-system, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Custom delicate ambient shadows specified in design system */
+.shadow-warm-resting {
+  box-shadow: 0 4px 20px -2px rgba(87, 81, 75, 0.05), 0 2px 6px -1px rgba(87, 81, 75, 0.03);
+}
+
+.shadow-warm-floating {
+  box-shadow: 0 16px 36px -4px rgba(45, 41, 38, 0.08), 0 6px 12px -2px rgba(45, 41, 38, 0.04);
+}
+
+.shadow-warm-sheet {
+  box-shadow: 0 -10px 30px -4px rgba(45, 41, 38, 0.06);
+}
+
+/* Smooth breathing animation ring */
+@keyframes breathingPulse {
+  0%, 100% {
+    transform: scale(0.92);
+    opacity: 0.7;
+  }
+  50% {
+    transform: scale(1.08);
+    opacity: 1;
+  }
+}
+
+.animate-breathe {
+  animation: breathingPulse 8s ease-in-out infinite;
+}
+
+@media print {
+  header, footer, nav, button, .no-print {
+    display: none !important;
+  }
+  body, main {
+    background: #ffffff !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+  #clinical-report-sheet {
+    box-shadow: none !important;
+    border: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    max-width: 100% !important;
+    width: 100% !important;
+  }
+}
+
