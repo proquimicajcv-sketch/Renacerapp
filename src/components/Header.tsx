@@ -1,11 +1,11 @@
 import React from 'react';
 import { Wind, Calendar, HeartHandshake } from 'lucide-react';
 import { PostpartumProfile } from '../types';
-import { OFFICIAL_LOGO_SRC } from '../data/motivationalMessages';
+import { OFFICIAL_LOGO_SRC, getTodayCalendarInfo } from '../data/motivationalMessages';
 
 interface HeaderProps {
-  activeTab: 'hoy' | 'rutinas' | 'fuerza' | 'registro' | 'guias';
-  setActiveTab: (tab: 'hoy' | 'rutinas' | 'fuerza' | 'registro' | 'guias') => void;
+  activeTab: 'hoy' | 'rutinas' | 'renacer' | 'fuerza' | 'registro' | 'guias';
+  setActiveTab: (tab: 'hoy' | 'rutinas' | 'renacer' | 'fuerza' | 'registro' | 'guias') => void;
   profile: PostpartumProfile;
   currentDay: number;
   onOpenBreathing: () => void;
@@ -22,6 +22,7 @@ export const Header: React.FC<HeaderProps> = ({
   onEditProfile,
   onOpenMotivational,
 }) => {
+  const calendarInfo = getTodayCalendarInfo();
   return (
     <header className="sticky top-0 z-30 bg-[#fef8f4]/95 backdrop-blur-md border-b border-[#dbc1ba]/40 transition-colors">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 h-18 sm:h-20 flex items-center justify-between gap-3 md:gap-8">
@@ -82,6 +83,20 @@ export const Header: React.FC<HeaderProps> = ({
           </button>
 
           <button
+            onClick={() => setActiveTab('renacer')}
+            className={`whitespace-nowrap transition-colors py-1 relative cursor-pointer ${
+              activeTab === 'renacer'
+                ? 'text-[#96432b] font-semibold'
+                : 'hover:text-[#1d1b19]'
+            }`}
+          >
+            Renacer Funcional (+24m)
+            {activeTab === 'renacer' && (
+              <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-[#96432b] rounded-full" />
+            )}
+          </button>
+
+          <button
             onClick={() => setActiveTab('fuerza')}
             className={`whitespace-nowrap transition-colors py-1 relative cursor-pointer ${
               activeTab === 'fuerza'
@@ -130,10 +145,11 @@ export const Header: React.FC<HeaderProps> = ({
           <button
             onClick={onOpenMotivational}
             className="h-10 px-3 sm:px-3.5 rounded-full bg-[#f8f3ef] hover:bg-[#f2ede9] border border-[#dbc1ba]/60 text-xs font-semibold text-[#96432b] flex items-center gap-1.5 transition-colors cursor-pointer shadow-xs focus:outline-none focus-visible:ring-1 focus-visible:ring-[#96432b]"
-            title="Leer el mensaje motivador de hoy"
+            title={`Sincronizado con el calendario: ${calendarInfo.fullFormatted}`}
           >
-            <HeartHandshake className="w-3.5 h-3.5 shrink-0" />
-            <span className="whitespace-nowrap">Día {currentDay}/30</span>
+            <Calendar className="w-3.5 h-3.5 shrink-0 text-[#96432b]" />
+            <span className="whitespace-nowrap hidden sm:inline">{calendarInfo.shortFormatted} ·</span>
+            <span className="whitespace-nowrap font-bold">Día {currentDay}/30</span>
           </button>
 
           {/* Week Badge */}

@@ -1,4 +1,4 @@
-export type RecoveryPhase = 'fase-1' | 'fase-2' | 'fase-3' | 'fase-4';
+export type UserTrack = 'postparto-reciente' | 'renacer-funcional';
 
 export interface PostpartumProfile {
   name: string;
@@ -9,6 +9,13 @@ export interface PostpartumProfile {
   diastasisWidthCm: number;
   hasPelvicDiscomfort: boolean;
   notes: string;
+  // Perfil de Reconexión a Largo Plazo (+24 meses)
+  userTrack?: UserTrack;
+  yearsPostpartum?: number;
+  lumbarDiscomfortLevel?: 'none' | 'mild' | 'moderate' | 'chronic';
+  stairFatigueLevel?: 'none' | 'mild' | 'moderate' | 'high';
+  dailySleepHours?: number;
+  sedentaryHoursPerDay?: number;
 }
 
 export type ExerciseCategory =
@@ -17,7 +24,8 @@ export type ExerciseCategory =
   | 'movilidad'
   | 'cesarea'
   | 'respiracion'
-  | 'fuerza-vitalidad';
+  | 'fuerza-vitalidad'
+  | 'renacer-funcional';
 
 export type EquipmentType = 'peso-corporal' | 'ligas' | 'mancuernas' | 'mixto';
 

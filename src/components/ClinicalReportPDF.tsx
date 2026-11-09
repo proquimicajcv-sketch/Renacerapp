@@ -267,8 +267,16 @@ export const ClinicalReportPDF: React.FC<ClinicalReportPDFProps> = ({
               Paciente: <strong className="text-[#96432b] text-sm">{profile.name}</strong>
             </div>
             <div className="text-[#55433e]">
-              Parto: <strong className="text-[#1d1b19] capitalize">{profile.deliveryType}</strong> · Semana:{' '}
-              <strong className="text-[#1d1b19]">{profile.weeksPostpartum}</strong>
+              Parto: <strong className="text-[#1d1b19] capitalize">{profile.deliveryType}</strong> ·{' '}
+              {profile.userTrack === 'renacer-funcional' ? (
+                <span>
+                  Etapa: <strong className="text-[#41674c]">Renacer Funcional ({profile.yearsPostpartum || Math.round(profile.weeksPostpartum / 52)} años)</strong>
+                </span>
+              ) : (
+                <span>
+                  Semana: <strong className="text-[#1d1b19]">{profile.weeksPostpartum}</strong>
+                </span>
+              )}
             </div>
           </div>
         </div>

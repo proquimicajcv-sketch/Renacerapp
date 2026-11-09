@@ -16,6 +16,10 @@ export const ProfileModal: React.FC<ProfileModalProps> = ({
   onSave,
 }) => {
   const [name, setName] = useState(profile.name);
+  const [userTrack, setUserTrack] = useState<'postparto-reciente' | 'renacer-funcional'>(
+    profile.userTrack || (profile.weeksPostpartum > 104 ? 'renacer-funcional' : 'postparto-reciente')
+  );
+  const [yearsPostpartum, setYearsPostpartum] = useState<number>(profile.yearsPostpartum || 3);
   const [weeks, setWeeks] = useState(profile.weeksPostpartum);
   const [deliveryType, setDeliveryType] = useState(profile.deliveryType);
   const [notes, setNotes] = useState(profile.notes);
@@ -27,7 +31,9 @@ export const ProfileModal: React.FC<ProfileModalProps> = ({
     onSave({
       ...profile,
       name,
-      weeksPostpartum: Number(weeks),
+      userTrack,
+      yearsPostpartum: userTrack === 'renacer-funcional' ? yearsPostpartum : undefined,
+      weeksPostpartum: userTrack === 'renacer-funcional' ? yearsPostpartum * 52 : Number(weeks),
       deliveryType,
       notes,
     });
@@ -73,24 +79,79 @@ export const ProfileModal: React.FC<ProfileModalProps> = ({
             />
           </div>
 
+          {/* Stage Switcher */}
           <div>
             <label className="text-xs font-semibold text-[#1d1b19] block mb-1">
-              Semanas desde el Parto ({weeks} semanas)
+              Etapa de Entrenamiento
             </label>
-            <input
-              type="range"
-              min="1"
-              max="24"
-              value={weeks}
-              onChange={(e) => setWeeks(Number(e.target.value))}
-              className="w-full accent-[#96432b] cursor-pointer"
-            />
-            <div className="flex justify-between text-[11px] text-[#55433e] font-mono mt-0.5">
-              <span>Sem 1</span>
-              <span>Sem 6 (Cuarto Trimestre)</span>
-              <span>Sem 24</span>
+            <div className="grid grid-cols-2 gap-2 text-xs">
+              <button
+                type="button"
+                onClick={() => setUserTrack('postparto-reciente')}
+                className={`p-2.5 rounded-xl border text-left font-medium transition-all cursor-pointer ${
+                  userTrack === 'postparto-reciente'
+                    ? 'border-[#96432b] bg-[#ffdbd1]/30 text-[#96432b] font-bold'
+                    : 'border-[#dbc1ba]/40 text-[#55433e] hover:bg-[#fbf8f3]'
+                }`}
+              >
+                Postparto Reciente
+                <span className="block text-[10px] text-[#55433e] font-normal">&lt; 24 meses</span>
+              </button>
+              <button
+                type="button"
+                onClick={() => setUserTrack('renacer-funcional')}
+                className={`p-2.5 rounded-xl border text-left font-medium transition-all cursor-pointer ${
+                  userTrack === 'renacer-funcional'
+                    ? 'border-[#41674c] bg-[#edf5ef] text-[#41674c] font-bold'
+                    : 'border-[#dbc1ba]/40 text-[#55433e] hover:bg-[#fbf8f3]'
+                }`}
+              >
+                El Renacer Funcional
+                <span className="block text-[10px] text-[#41674c] font-normal">&gt; 2 años sin entrenar</span>
+              </button>
             </div>
           </div>
+
+          {userTrack === 'renacer-funcional' ? (
+            <div className="p-3 bg-[#edf5ef] rounded-xl border border-[#41674c]/30 space-y-2">
+              <div className="flex items-center justify-between text-xs font-semibold text-[#1d1b19]">
+                <span>Años desde tu último parto:</span>
+                <strong className="text-[#41674c] text-sm font-mono">{yearsPostpartum} años</strong>
+              </div>
+              <input
+                type="range"
+                min="2"
+                max="15"
+                value={yearsPostpartum}
+                onChange={(e) => setYearsPostpartum(Number(e.target.value))}
+                className="w-full accent-[#41674c] cursor-pointer"
+              />
+              <div className="flex justify-between text-[10px] text-[#55433e] font-mono">
+                <span>2 años</span>
+                <span>5 años</span>
+                <span>10+ años</span>
+              </div>
+            </div>
+          ) : (
+            <div>
+              <label className="text-xs font-semibold text-[#1d1b19] block mb-1">
+                Semanas desde el Parto ({weeks} semanas)
+              </label>
+              <input
+                type="range"
+                min="1"
+                max="24"
+                value={weeks}
+                onChange={(e) => setWeeks(Number(e.target.value))}
+                className="w-full accent-[#96432b] cursor-pointer"
+              />
+              <div className="flex justify-between text-[11px] text-[#55433e] font-mono mt-0.5">
+                <span>Sem 1</span>
+                <span>Sem 6 (Cuarto Trimestre)</span>
+                <span>Sem 24</span>
+              </div>
+            </div>
+          )}
 
           <div>
             <label className="text-xs font-semibold text-[#1d1b19] block mb-1">

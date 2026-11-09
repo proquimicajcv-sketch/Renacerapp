@@ -199,10 +199,43 @@ export const MOTIVATIONAL_MESSAGES: MotivationalMessage[] = [
   },
 ];
 
+export interface CalendarDayInfo {
+  dayOfMonth: number;
+  phraseDay: number;
+  dayName: string;
+  monthName: string;
+  year: number;
+  shortFormatted: string;
+  fullFormatted: string;
+}
+
+export function getTodayCalendarInfo(): CalendarDayInfo {
+  const now = new Date();
+  const dayOfMonth = now.getDate();
+  const phraseDay = Math.min(30, Math.max(1, dayOfMonth > 30 ? 30 : dayOfMonth));
+  const monthNames = [
+    'enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio',
+    'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'
+  ];
+  const weekdayNames = [
+    'Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'
+  ];
+  const monthName = monthNames[now.getMonth()];
+  const dayName = weekdayNames[now.getDay()];
+
+  return {
+    dayOfMonth,
+    phraseDay,
+    dayName,
+    monthName,
+    year: now.getFullYear(),
+    shortFormatted: `${dayOfMonth} de ${monthName}`,
+    fullFormatted: `${dayName}, ${dayOfMonth} de ${monthName}`,
+  };
+}
+
 export function getTodayDayIndex(): number {
-  const dayOfMonth = new Date().getDate();
-  // Bound strictly between 1 and 30
-  return Math.min(30, Math.max(1, dayOfMonth > 30 ? 30 : dayOfMonth));
+  return getTodayCalendarInfo().phraseDay;
 }
 
 export function getMessageForDay(dayNumber: number): MotivationalMessage {

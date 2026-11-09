@@ -1,11 +1,12 @@
-import React from 'react';
-import { Play, Check, Droplets, Wind, ShieldCheck, ArrowRight, HeartHandshake, Maximize2 } from 'lucide-react';
+import React, { useState } from 'react';
+import { Play, Check, Droplets, Wind, ShieldCheck, ArrowRight, HeartHandshake, Maximize2, Calendar, RotateCcw } from 'lucide-react';
 import { PostpartumProfile, DailyHabit, Routine } from '../types';
 import { RadialTracker } from './RadialTracker';
 import {
   OFFICIAL_LOGO_SRC,
   getMessageForDay,
   MotivationalMessage,
+  getTodayCalendarInfo,
 } from '../data/motivationalMessages';
 import { breathImg } from '../data/postpartumData';
 
@@ -18,9 +19,10 @@ interface TodayHubProps {
   onOpenBreathing: () => void;
   waterGlasses: number;
   onAddWater: (delta: number) => void;
-  onNavigateToTab: (tab: 'hoy' | 'rutinas' | 'fuerza' | 'registro' | 'guias') => void;
+  onNavigateToTab: (tab: 'hoy' | 'rutinas' | 'renacer' | 'fuerza' | 'registro' | 'guias') => void;
   currentDay: number;
   onOpenMotivationalModal: () => void;
+  onSelectMotivationalDay: (day: number) => void;
   pelvicSeriesCompleted: number;
   breathingMinutesCompleted: number;
   onAddPelvicSeries: (delta: number) => void;
@@ -40,12 +42,15 @@ export const TodayHub: React.FC<TodayHubProps> = ({
   onNavigateToTab,
   currentDay,
   onOpenMotivationalModal,
+  onSelectMotivationalDay,
   pelvicSeriesCompleted,
   breathingMinutesCompleted,
   onAddPelvicSeries,
   onAddBreathingMinutes,
   onResetDailyProgress,
 }) => {
+  const [showDaySelector, setShowDaySelector] = useState(false);
+  const calendarInfo = getTodayCalendarInfo();
   const completedHabitsCount = habits.filter((h) => h.completed).length;
   const habitPercentage = habits.length > 0 ? Math.round((completedHabitsCount / habits.length) * 100) : 0;
   const pelvicPercent = Math.min(100, Math.round((pelvicSeriesCompleted / 3) * 100));
@@ -53,6 +58,7 @@ export const TodayHub: React.FC<TodayHubProps> = ({
   const totalAverage = Math.round((pelvicPercent + breathingPercent + habitPercentage) / 3);
 
   const todayMessage: MotivationalMessage = getMessageForDay(currentDay);
+  const isActualToday = currentDay === calendarInfo.phraseDay;
 
   return (
     <div className="space-y-8 animate-in fade-in duration-300">
@@ -62,7 +68,11 @@ export const TodayHub: React.FC<TodayHubProps> = ({
           <div>
             <div className="flex items-center gap-2 text-xs font-semibold text-[#41674c] uppercase tracking-wider mb-1.5">
               <span className="w-2 h-2 rounded-full bg-[#41674c]" />
-              <span>Semana {profile.weeksPostpartum} de Posparto · Fase de Consolidación</span>
+              {profile.userTrack === 'renacer-funcional' || profile.weeksPostpartum > 104 ? (
+                <span>El Renacer Funcional · {profile.yearsPostpartum || Math.round(profile.weeksPostpartum / 52)} Años Posparto · Cero Culpas</span>
+              ) : (
+                <span>Semana {profile.weeksPostpartum} de Posparto · Fase de Consolidación</span>
+              )}
             </div>
             <div className="flex items-center gap-3">
               <h1 className="font-serif text-3xl sm:text-4xl text-[#1d1b19] font-medium tracking-tight">
@@ -70,8 +80,9 @@ export const TodayHub: React.FC<TodayHubProps> = ({
               </h1>
             </div>
             <p className="text-[15px] text-[#55433e] mt-1 font-sans max-w-xl">
-              Tu cuerpo gestó vida durante meses; dale la bienvenida a cada avance con paciencia,
-              respiración suave y movimiento restaurador.
+              {profile.userTrack === 'renacer-funcional'
+                ? 'No importa si pasaron 2, 5 o 10 años; hoy es el día uno para volver a conectar con tu fuerza, aliviar tu espalda y recuperar tu vitalidad.'
+                : 'Tu cuerpo gestó vida durante meses; dale la bienvenida a cada avance con paciencia, respiración suave y movimiento restaurador.'}
             </p>
           </div>
 
@@ -93,8 +104,33 @@ export const TodayHub: React.FC<TodayHubProps> = ({
         </div>
       </section>
 
-      {/* Prominent Daily Motivational Card with Official Logo following Golden Ratio */}
+      {/* Prominent Daily Motivational Card with Official Logo following Golden Ratio & Calendar Sync */}
       <section className="bg-white rounded-3xl border border-[#dbc1ba]/50 p-6 sm:p-8 shadow-warm-resting relative overflow-hidden">
+        {/* Top Calendar Synchronization Banner */}
+        <div className="flex flex-wrap items-center justify-between gap-2 pb-4 mb-5 border-b border-[#f2ede9]">
+          <div className="flex items-center gap-2 text-xs font-semibold text-[#41674c]">
+            <Calendar className="w-4 h-4 text-[#41674c]" />
+            <span>Calendario sincronizado: <strong>Hoy es {calendarInfo.fullFormatted}</strong></span>
+          </div>
+
+          <div className="flex items-center gap-2">
+            {isActualToday ? (
+              <span className="text-[11px] font-semibold text-[#41674c] bg-[#edf5ef] px-2.5 py-1 rounded-full border border-[#41674c]/20">
+                ✓ Frase de Hoy (Día {todayMessage.day})
+              </span>
+            ) : (
+              <button
+                onClick={() => onSelectMotivationalDay(calendarInfo.phraseDay)}
+                className="text-[11px] font-semibold text-[#96432b] hover:text-[#803722] bg-[#fbf8f3] hover:bg-[#f2ede9] border border-[#dbc1ba]/50 px-2.5 py-1 rounded-full flex items-center gap-1 cursor-pointer transition-colors"
+                title="Volver a la fecha real de hoy"
+              >
+                <RotateCcw className="w-3 h-3" />
+                <span>Volver a hoy ({calendarInfo.shortFormatted})</span>
+              </button>
+            )}
+          </div>
+        </div>
+
         <div className="flex flex-col md:flex-row items-center gap-6 md:gap-8">
           {/* Prominent Circular Official Logo */}
           <div className="shrink-0">
@@ -118,7 +154,7 @@ export const TodayHub: React.FC<TodayHubProps> = ({
             <div className="flex flex-wrap items-center justify-center md:justify-between gap-2">
               <div className="flex items-center gap-2 text-xs font-semibold text-[#96432b] uppercase tracking-wider">
                 <HeartHandshake className="w-3.5 h-3.5" />
-                <span>Mensaje Motivador del Día · Día {todayMessage.day}/30</span>
+                <span>Frase {todayMessage.day} de 30 · {isActualToday ? 'Hoy en tu calendario' : `Día ${todayMessage.day}`}</span>
               </div>
               <span className="text-xs text-[#55433e]">
                 Semana {todayMessage.week} · {todayMessage.weekTheme}
@@ -129,15 +165,115 @@ export const TodayHub: React.FC<TodayHubProps> = ({
               "{todayMessage.message}"
             </p>
 
-            <div className="pt-1 flex items-center justify-center md:justify-start gap-3">
+            <div className="pt-2 flex flex-wrap items-center justify-center md:justify-start gap-2 sm:gap-3">
               <button
                 onClick={onOpenMotivationalModal}
-                className="text-xs font-semibold text-[#96432b] hover:text-[#803722] inline-flex items-center gap-1.5 transition-colors cursor-pointer"
+                className="text-xs font-semibold text-[#96432b] hover:text-[#803722] bg-[#fbf8f3] hover:bg-[#f2ede9] border border-[#dbc1ba]/50 px-3 py-1.5 rounded-full inline-flex items-center gap-1.5 transition-colors cursor-pointer"
               >
                 <Maximize2 className="w-3.5 h-3.5" />
                 <span>Abrir en tarjeta emergente</span>
               </button>
+
+              {/* Direct Quick Date Switcher: Lets user easily verify Day 5, Day 10, etc. */}
+              <div className="flex items-center gap-1 text-xs">
+                <span className="text-[11px] text-[#55433e] mr-1 hidden sm:inline">Probar día:</span>
+                <button
+                  onClick={() => onSelectMotivationalDay(calendarInfo.phraseDay)}
+                  className={`px-2 py-1 rounded text-[11px] font-medium transition-colors cursor-pointer ${
+                    isActualToday
+                      ? 'bg-[#41674c] text-white font-bold'
+                      : 'bg-[#edf5ef] text-[#41674c] hover:bg-[#dfeee2]'
+                  }`}
+                  title={`Día actual del calendario (${calendarInfo.phraseDay})`}
+                >
+                  Hoy ({calendarInfo.phraseDay})
+                </button>
+                <button
+                  onClick={() => onSelectMotivationalDay(5)}
+                  className={`px-2 py-1 rounded text-[11px] font-medium transition-colors cursor-pointer ${
+                    currentDay === 5
+                      ? 'bg-[#96432b] text-white font-bold'
+                      : 'bg-[#f8f3ef] hover:bg-[#f2ede9] text-[#55433e]'
+                  }`}
+                  title="Ver frase del día 5"
+                >
+                  Día 5
+                </button>
+                <button
+                  onClick={() => onSelectMotivationalDay(10)}
+                  className={`px-2 py-1 rounded text-[11px] font-medium transition-colors cursor-pointer ${
+                    currentDay === 10
+                      ? 'bg-[#96432b] text-white font-bold'
+                      : 'bg-[#f8f3ef] hover:bg-[#f2ede9] text-[#55433e]'
+                  }`}
+                  title="Ver frase del día 10"
+                >
+                  Día 10
+                </button>
+                <button
+                  onClick={() => onSelectMotivationalDay(15)}
+                  className={`px-2 py-1 rounded text-[11px] font-medium transition-colors cursor-pointer ${
+                    currentDay === 15
+                      ? 'bg-[#96432b] text-white font-bold'
+                      : 'bg-[#f8f3ef] hover:bg-[#f2ede9] text-[#55433e]'
+                  }`}
+                  title="Ver frase del día 15"
+                >
+                  Día 15
+                </button>
+                <button
+                  onClick={() => onSelectMotivationalDay(30)}
+                  className={`px-2 py-1 rounded text-[11px] font-medium transition-colors cursor-pointer ${
+                    currentDay === 30
+                      ? 'bg-[#96432b] text-white font-bold'
+                      : 'bg-[#f8f3ef] hover:bg-[#f2ede9] text-[#55433e]'
+                  }`}
+                  title="Ver frase del día 30"
+                >
+                  Día 30
+                </button>
+                <button
+                  onClick={() => setShowDaySelector(!showDaySelector)}
+                  className="px-2 py-1 rounded text-[11px] font-semibold text-[#96432b] hover:underline cursor-pointer"
+                >
+                  {showDaySelector ? 'Cerrar selector' : 'Días 1-30...'}
+                </button>
+              </div>
             </div>
+
+            {/* Expanded Day Grid (1 - 30) */}
+            {showDaySelector && (
+              <div className="mt-3 p-3 bg-[#fbf8f3] rounded-2xl border border-[#dbc1ba]/40 animate-in fade-in duration-200">
+                <div className="text-[11px] font-semibold text-[#55433e] mb-2 text-left">
+                  Selecciona cualquier día del mes para ver su frase:
+                </div>
+                <div className="grid grid-cols-10 gap-1">
+                  {Array.from({ length: 30 }, (_, i) => i + 1).map((d) => {
+                    const isSelected = d === currentDay;
+                    const isActual = d === calendarInfo.phraseDay;
+                    return (
+                      <button
+                        key={d}
+                        onClick={() => {
+                          onSelectMotivationalDay(d);
+                          setShowDaySelector(false);
+                        }}
+                        className={`h-7 rounded text-xs font-mono font-medium transition-colors cursor-pointer ${
+                          isSelected
+                            ? 'bg-[#96432b] text-white font-bold'
+                            : isActual
+                            ? 'bg-[#edf5ef] text-[#41674c] border border-[#41674c] font-bold'
+                            : 'bg-white hover:bg-[#f2ede9] text-[#55433e] border border-[#dbc1ba]/30'
+                        }`}
+                        title={isActual ? `Día ${d} (Fecha de hoy)` : `Día ${d}`}
+                      >
+                        {d}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </section>
@@ -401,6 +537,30 @@ export const TodayHub: React.FC<TodayHubProps> = ({
             </div>
           ))}
         </div>
+      </section>
+
+      {/* Transition Banner to El Renacer Funcional (+24 meses) */}
+      <section className="bg-gradient-to-r from-[#41674c] to-[#598466] rounded-3xl p-6 sm:p-7 text-white shadow-warm-resting relative overflow-hidden flex flex-col md:flex-row items-center justify-between gap-5">
+        <div className="relative z-10 max-w-xl space-y-1.5 text-center md:text-left">
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/15 text-white text-xs font-semibold uppercase tracking-wider backdrop-blur-sm">
+            <span>Para +24 Meses o Años Sin Entrenar</span>
+          </div>
+          <h3 className="font-serif text-2xl sm:text-3xl font-medium text-white">
+            El Renacer Funcional
+          </h3>
+          <p className="text-xs sm:text-sm text-white/95 leading-relaxed font-sans">
+            "No importa si pasaron 2, 5 o 10 años; hoy es el día uno para volver a conectar con tu fuerza sin prisa ni culpa".
+            Programas en 3 fases de 8 a 12 minutos, la regla de los 10 minutos y evaluación de línea base.
+          </p>
+        </div>
+
+        <button
+          onClick={() => onNavigateToTab('renacer')}
+          className="relative z-10 h-11 px-5 rounded-full bg-white hover:bg-[#edf5ef] text-[#41674c] text-xs sm:text-sm font-semibold flex items-center gap-2 shadow-sm shrink-0 transition-transform active:scale-[0.98] cursor-pointer"
+        >
+          <span>Ir a Renacer Funcional</span>
+          <ArrowRight className="w-4 h-4" />
+        </button>
       </section>
 
       {/* Transition Banner to Nueva Etapa: Fuerza & Vitalidad */}

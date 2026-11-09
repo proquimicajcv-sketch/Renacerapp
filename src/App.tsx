@@ -15,6 +15,7 @@ import { ProfileModal } from './components/ProfileModal';
 import { MobileNav } from './components/MobileNav';
 import { MotivationalModal } from './components/MotivationalModal';
 import { StrengthVitalitySection } from './components/StrengthVitalitySection';
+import { RenacerFuncionalSection } from './components/RenacerFuncionalSection';
 import { WelcomeOnboardingModal } from './components/WelcomeOnboardingModal';
 
 import {
@@ -24,6 +25,7 @@ import {
   strengthRoutines,
   clinicalGuides,
 } from './data/postpartumData';
+import { RENACER_ROUTINES } from './data/renacerFuncionalData';
 import {
   getTodayDayIndex,
   OFFICIAL_LOGO_SRC,
@@ -38,7 +40,7 @@ import {
 } from './types';
 
 export default function App() {
-  const [activeTab, setActiveTab] = useState<'hoy' | 'rutinas' | 'fuerza' | 'registro' | 'guias'>('hoy');
+  const [activeTab, setActiveTab] = useState<'hoy' | 'rutinas' | 'renacer' | 'fuerza' | 'registro' | 'guias'>('hoy');
 
   // Persistent profile with primary and backup key redundancy
   const [profile, setProfile] = useState<PostpartumProfile>(() => {
@@ -329,7 +331,7 @@ export default function App() {
   };
 
   const handleCompleteRoutine = (routineId: string, minutes: number) => {
-    const routine = [...postpartumRoutines, ...strengthRoutines].find((r) => r.id === routineId);
+    const routine = [...postpartumRoutines, ...strengthRoutines, ...RENACER_ROUTINES].find((r) => r.id === routineId);
     const newHistoryItem: WorkoutHistoryItem = {
       id: `w-${Date.now()}`,
       routineId,
@@ -438,6 +440,7 @@ export default function App() {
             onNavigateToTab={(tab) => setActiveTab(tab)}
             currentDay={currentMotivationalDay}
             onOpenMotivationalModal={() => setIsMotivationalOpen(true)}
+            onSelectMotivationalDay={(day) => setCurrentMotivationalDay(day)}
             pelvicSeriesCompleted={pelvicSeriesCompleted}
             breathingMinutesCompleted={breathingMinutesCompleted}
             onAddPelvicSeries={handleAddPelvicSeries}
@@ -450,6 +453,14 @@ export default function App() {
           <RoutinesLibrary
             routines={postpartumRoutines}
             onStartRoutine={(routine) => setActiveRoutine(routine)}
+          />
+        )}
+
+        {activeTab === 'renacer' && (
+          <RenacerFuncionalSection
+            onStartRoutine={(routine) => setActiveRoutine(routine)}
+            profile={profile}
+            onUpdateProfile={(updated) => setProfile((prev) => ({ ...prev, ...updated }))}
           />
         )}
 
