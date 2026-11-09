@@ -7,6 +7,7 @@ import {
   getMessageForDay,
   MotivationalMessage,
 } from '../data/motivationalMessages';
+import { breathImg } from '../data/postpartumData';
 
 interface TodayHubProps {
   profile: PostpartumProfile;
@@ -20,6 +21,11 @@ interface TodayHubProps {
   onNavigateToTab: (tab: 'hoy' | 'rutinas' | 'fuerza' | 'registro' | 'guias') => void;
   currentDay: number;
   onOpenMotivationalModal: () => void;
+  pelvicSeriesCompleted: number;
+  breathingMinutesCompleted: number;
+  onAddPelvicSeries: (delta: number) => void;
+  onAddBreathingMinutes: (delta: number) => void;
+  onResetDailyProgress: () => void;
 }
 
 export const TodayHub: React.FC<TodayHubProps> = ({
@@ -34,9 +40,17 @@ export const TodayHub: React.FC<TodayHubProps> = ({
   onNavigateToTab,
   currentDay,
   onOpenMotivationalModal,
+  pelvicSeriesCompleted,
+  breathingMinutesCompleted,
+  onAddPelvicSeries,
+  onAddBreathingMinutes,
+  onResetDailyProgress,
 }) => {
   const completedHabitsCount = habits.filter((h) => h.completed).length;
-  const habitPercentage = Math.round((completedHabitsCount / habits.length) * 100);
+  const habitPercentage = habits.length > 0 ? Math.round((completedHabitsCount / habits.length) * 100) : 0;
+  const pelvicPercent = Math.min(100, Math.round((pelvicSeriesCompleted / 3) * 100));
+  const breathingPercent = Math.min(100, Math.round((breathingMinutesCompleted / 10) * 100));
+  const totalAverage = Math.round((pelvicPercent + breathingPercent + habitPercentage) / 3);
 
   const todayMessage: MotivationalMessage = getMessageForDay(currentDay);
 
@@ -198,19 +212,23 @@ export const TodayHub: React.FC<TodayHubProps> = ({
                 <h3 className="font-serif text-xl font-medium text-[#1d1b19]">
                   Recuperación Diaria
                 </h3>
-                <p className="text-xs text-[#55433e]">Metas de confort y activación</p>
+                <p className="text-xs text-[#55433e]">Progreso acumulado hoy según tus actividades</p>
               </div>
-              <span className="text-xs font-semibold text-[#41674c] bg-[#edf5ef] px-2.5 py-1 rounded-full">
-                Constancia activa
-              </span>
+              <button
+                onClick={onResetDailyProgress}
+                title="Reiniciar progreso del día al 0%"
+                className="text-[11px] font-medium text-[#96432b] hover:text-[#803722] bg-[#fbf8f3] hover:bg-[#f2ede9] border border-[#dbc1ba]/40 px-2.5 py-1 rounded-full transition-colors cursor-pointer"
+              >
+                Reiniciar (0%)
+              </button>
             </div>
 
             {/* Radial concentric rings */}
             <div className="py-4 flex justify-center">
               <RadialTracker
-                pelvicPercent={67}
-                breathingPercent={100}
-                mobilityPercent={Math.max(30, habitPercentage)}
+                pelvicPercent={pelvicPercent}
+                breathingPercent={breathingPercent}
+                mobilityPercent={habitPercentage}
                 size={190}
               />
             </div>
@@ -220,26 +238,79 @@ export const TodayHub: React.FC<TodayHubProps> = ({
               <div className="flex items-center justify-between p-2.5 rounded-lg bg-[#fbf8f3] border border-[#dbc1ba]/20">
                 <div className="flex items-center gap-2.5">
                   <span className="w-3 h-3 rounded-full bg-[#96432b] shrink-0" />
-                  <span className="font-medium text-[#1d1b19]">Suelo Pélvico</span>
+                  <div>
+                    <span className="font-medium text-[#1d1b19] block">Suelo Pélvico & Core</span>
+                    <span className="text-[11px] text-[#55433e]">{pelvicPercent}% de la meta diaria</span>
+                  </div>
                 </div>
-                <span className="text-[#55433e] font-semibold tabular-nums">2 / 3 series</span>
+                <div className="flex items-center gap-2">
+                  <span className="text-[#55433e] font-semibold tabular-nums">
+                    {pelvicSeriesCompleted} / 3 series
+                  </span>
+                  <div className="flex items-center gap-1">
+                    <button
+                      onClick={() => onAddPelvicSeries(-1)}
+                      disabled={pelvicSeriesCompleted <= 0}
+                      className="w-5 h-5 rounded bg-white hover:bg-[#f2ede9] border border-[#dbc1ba]/40 text-[#55433e] disabled:opacity-30 text-xs flex items-center justify-center font-bold cursor-pointer"
+                      title="Restar serie"
+                    >
+                      -
+                    </button>
+                    <button
+                      onClick={() => onAddPelvicSeries(1)}
+                      disabled={pelvicSeriesCompleted >= 3}
+                      className="w-5 h-5 rounded bg-[#96432b] hover:bg-[#803722] text-white disabled:opacity-30 text-xs flex items-center justify-center font-bold cursor-pointer"
+                      title="Sumar 1 serie (+1)"
+                    >
+                      +
+                    </button>
+                  </div>
+                </div>
               </div>
 
               <div className="flex items-center justify-between p-2.5 rounded-lg bg-[#fbf8f3] border border-[#dbc1ba]/20">
                 <div className="flex items-center gap-2.5">
                   <span className="w-3 h-3 rounded-full bg-[#41674c] shrink-0" />
-                  <span className="font-medium text-[#1d1b19]">Respiración Diafragmática</span>
+                  <div>
+                    <span className="font-medium text-[#1d1b19] block">Respiración Diafragmática</span>
+                    <span className="text-[11px] text-[#55433e]">{breathingPercent}% de la meta diaria</span>
+                  </div>
                 </div>
-                <span className="text-[#41674c] font-semibold tabular-nums">10 min · Completo</span>
+                <div className="flex items-center gap-2">
+                  <span className={`font-semibold tabular-nums ${breathingMinutesCompleted >= 10 ? 'text-[#41674c]' : 'text-[#55433e]'}`}>
+                    {breathingMinutesCompleted} / 10 min
+                  </span>
+                  <div className="flex items-center gap-1">
+                    <button
+                      onClick={() => onAddBreathingMinutes(-2)}
+                      disabled={breathingMinutesCompleted <= 0}
+                      className="w-5 h-5 rounded bg-white hover:bg-[#f2ede9] border border-[#dbc1ba]/40 text-[#55433e] disabled:opacity-30 text-xs flex items-center justify-center font-bold cursor-pointer"
+                      title="Restar 2 minutos"
+                    >
+                      -
+                    </button>
+                    <button
+                      onClick={() => onAddBreathingMinutes(2)}
+                      disabled={breathingMinutesCompleted >= 20}
+                      className="w-5 h-5 rounded bg-[#41674c] hover:bg-[#34533d] text-white disabled:opacity-30 text-xs flex items-center justify-center font-bold cursor-pointer"
+                      title="Sumar 2 minutos (+2)"
+                    >
+                      +
+                    </button>
+                  </div>
+                </div>
               </div>
 
               <div className="flex items-center justify-between p-2.5 rounded-lg bg-[#fbf8f3] border border-[#dbc1ba]/20">
                 <div className="flex items-center gap-2.5">
                   <span className="w-3 h-3 rounded-full bg-[#b55b41] shrink-0" />
-                  <span className="font-medium text-[#1d1b19]">Hábitos y Cuidados</span>
+                  <div>
+                    <span className="font-medium text-[#1d1b19] block">Hábitos y Cuidados</span>
+                    <span className="text-[11px] text-[#55433e]">{habitPercentage}% de los hábitos</span>
+                  </div>
                 </div>
                 <span className="text-[#55433e] font-semibold tabular-nums">
-                  {completedHabitsCount} de {habits.length} ({habitPercentage}%)
+                  {completedHabitsCount} de {habits.length}
                 </span>
               </div>
             </div>
@@ -362,7 +433,7 @@ export const TodayHub: React.FC<TodayHubProps> = ({
           <div className="flex items-start gap-4">
             <div className="w-16 h-16 rounded-xl overflow-hidden shrink-0 bg-[#e6e2de]">
               <img
-                src="/src/assets/images/postpartum_breath_serene_1794104205346.jpg"
+                src={breathImg}
                 alt="Pausa de respiración diafragmática"
                 className="w-full h-full object-cover"
               />

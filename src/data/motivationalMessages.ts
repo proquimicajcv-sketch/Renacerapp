@@ -1,4 +1,6 @@
-export const OFFICIAL_LOGO_SRC = '/assets/aistudio/Gemini_Generated_Image_ns5zrpns5zrpns5z_7e888c4b.jfif';
+import officialLogoImg from '../assets/logo_renacer.jfif';
+
+export const OFFICIAL_LOGO_SRC = officialLogoImg;
 
 export interface MotivationalMessage {
   day: number;

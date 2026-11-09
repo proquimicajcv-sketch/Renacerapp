@@ -64,13 +64,54 @@ export default function App() {
     }
   }, []);
 
+  // Daily date key helper
+  const getTodayDateKey = () => {
+    const d = new Date();
+    return `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}`;
+  };
+
   // Persistent daily habits
   const [habits, setHabits] = useState<DailyHabit[]>(() => {
     try {
+      const savedDate = localStorage.getItem('renacer_tracked_date');
+      const today = `${new Date().getFullYear()}-${new Date().getMonth() + 1}-${new Date().getDate()}`;
+      if (savedDate && savedDate !== today) {
+        // Reset habits for new day
+        return defaultDailyHabits.map((h) => ({ ...h, completed: false }));
+      }
       const saved = localStorage.getItem('renacer_habits');
       return saved ? JSON.parse(saved) : defaultDailyHabits;
     } catch {
       return defaultDailyHabits;
+    }
+  });
+
+  // Dynamic daily progress counters (starts at 0% by default)
+  const [pelvicSeriesCompleted, setPelvicSeriesCompleted] = useState<number>(() => {
+    try {
+      const savedDate = localStorage.getItem('renacer_tracked_date');
+      const today = `${new Date().getFullYear()}-${new Date().getMonth() + 1}-${new Date().getDate()}`;
+      if (savedDate && savedDate !== today) {
+        return 0; // New day starts at 0%
+      }
+      const saved = localStorage.getItem('renacer_pelvic_series');
+      return saved ? parseInt(saved, 10) : 0;
+    } catch {
+      return 0;
+    }
+  });
+
+  const [breathingMinutesCompleted, setBreathingMinutesCompleted] = useState<number>(() => {
+    try {
+      const savedDate = localStorage.getItem('renacer_tracked_date');
+      const today = `${new Date().getFullYear()}-${new Date().getMonth() + 1}-${new Date().getDate()}`;
+      if (savedDate && savedDate !== today) {
+        return 0; // New day starts at 0%
+      }
+      const saved = localStorage.getItem('renacer_breathing_minutes');
+      return saved ? parseInt(saved, 10) : 0;
+    } catch {
+      return 0;
     }
   });
 
@@ -202,6 +243,16 @@ export default function App() {
   }, [habits]);
 
   useEffect(() => {
+    localStorage.setItem('renacer_tracked_date', getTodayDateKey());
+    localStorage.setItem('renacer_pelvic_series', pelvicSeriesCompleted.toString());
+  }, [pelvicSeriesCompleted]);
+
+  useEffect(() => {
+    localStorage.setItem('renacer_tracked_date', getTodayDateKey());
+    localStorage.setItem('renacer_breathing_minutes', breathingMinutesCompleted.toString());
+  }, [breathingMinutesCompleted]);
+
+  useEffect(() => {
     localStorage.setItem('renacer_water', JSON.stringify(waterGlasses));
   }, [waterGlasses]);
 
@@ -248,6 +299,35 @@ export default function App() {
     setWaterGlasses((prev) => Math.max(0, Math.min(12, prev + delta)));
   };
 
+  const handleAddPelvicSeries = (delta: number) => {
+    setPelvicSeriesCompleted((prev) => {
+      const next = Math.max(0, Math.min(3, prev + delta));
+      if (delta > 0 && next > prev) {
+        showToast(`✓ Serie de suelo pélvico completada (${next}/3 series)`);
+      }
+      return next;
+    });
+  };
+
+  const handleAddBreathingMinutes = (delta: number) => {
+    setBreathingMinutesCompleted((prev) => {
+      const next = Math.max(0, Math.min(20, prev + delta));
+      if (delta > 0 && next > prev) {
+        showToast(`✓ +${delta} min de respiración registrados (${next}/10 min)`);
+      }
+      return next;
+    });
+  };
+
+  const handleResetDailyProgress = () => {
+    setPelvicSeriesCompleted(0);
+    setBreathingMinutesCompleted(0);
+    setHabits((prev) => prev.map((h) => ({ ...h, completed: false })));
+    localStorage.setItem('renacer_pelvic_series', '0');
+    localStorage.setItem('renacer_breathing_minutes', '0');
+    showToast('✓ Progreso diario reiniciado al 0% para hoy.');
+  };
+
   const handleCompleteRoutine = (routineId: string, minutes: number) => {
     const routine = [...postpartumRoutines, ...strengthRoutines].find((r) => r.id === routineId);
     const newHistoryItem: WorkoutHistoryItem = {
@@ -260,7 +340,9 @@ export default function App() {
     };
 
     setWorkoutHistory((prev) => [newHistoryItem, ...prev]);
-    showToast(`🌟 ¡Sesión completada! Registrados ${minutes} min acumulados en tu informe.`);
+    // Automatically add 1 completed series to daily progress
+    setPelvicSeriesCompleted((prev) => Math.min(3, prev + 1));
+    showToast(`🌟 ¡Sesión completada! Registrados ${minutes} min y +1 serie de ejercicio hoy.`);
   };
 
   const handleAddLog = (newLog: Omit<SymptomLog, 'id'>) => {
@@ -356,6 +438,11 @@ export default function App() {
             onNavigateToTab={(tab) => setActiveTab(tab)}
             currentDay={currentMotivationalDay}
             onOpenMotivationalModal={() => setIsMotivationalOpen(true)}
+            pelvicSeriesCompleted={pelvicSeriesCompleted}
+            breathingMinutesCompleted={breathingMinutesCompleted}
+            onAddPelvicSeries={handleAddPelvicSeries}
+            onAddBreathingMinutes={handleAddBreathingMinutes}
+            onResetDailyProgress={handleResetDailyProgress}
           />
         )}
 
@@ -417,6 +504,7 @@ export default function App() {
       <BreathingModal
         isOpen={isBreathingOpen}
         onClose={() => setIsBreathingOpen(false)}
+        onAddMinutes={handleAddBreathingMinutes}
       />
 
       {/* Profile Edit Modal */}

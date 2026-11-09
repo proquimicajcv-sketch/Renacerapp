@@ -1,5 +1,15 @@
 import { Routine, DailyHabit, GuideArticle, PostpartumProfile } from '../types';
 
+import heroImg from '../assets/images/postpartum_rehab_hero_1794104204365.jpg';
+import breathImg from '../assets/images/postpartum_breath_serene_1794104205346.jpg';
+import mobilityImg from '../assets/images/postpartum_mobility_stretch_1794104205243.jpg';
+import teaImg from '../assets/images/postpartum_tea_nourish_1794104205057.jpg';
+import bandsImg from '../assets/images/strength_resistance_bands_1794105707060.jpg';
+import dumbbellsImg from '../assets/images/strength_light_dumbbells_1794105707358.jpg';
+import lungesImg from '../assets/images/strength_fullbody_lunges_1794105707175.jpg';
+
+export { heroImg, breathImg, mobilityImg, teaImg, bandsImg, dumbbellsImg, lungesImg };
+
 export const defaultProfile: PostpartumProfile = {
   name: 'Elena',
   deliveryType: 'vaginal',
@@ -16,14 +26,14 @@ export const defaultDailyHabits: DailyHabit[] = [
     id: 'habit-1',
     title: 'Exhalar y abrazar el abdomen al levantar cargas',
     description: 'Activa suavemente el transverso antes de levantar a tu bebé de la cuna o el cambiador.',
-    completed: true,
+    completed: false,
     category: 'postura',
   },
   {
     id: 'habit-2',
     title: 'Sesión de respiración diafragmática 360°',
     description: '8 a 10 minutos de respiración costal profunda con relajación pélvica.',
-    completed: true,
+    completed: false,
     category: 'respiracion',
   },
   {
@@ -37,7 +47,7 @@ export const defaultDailyHabits: DailyHabit[] = [
     id: 'habit-4',
     title: 'Hidratación celular profunda (2.2 Litros)',
     description: 'Vital para la elasticidad de la fascia, producción láctea y tránsito digestivo.',
-    completed: true,
+    completed: false,
     category: 'hidratacion',
   },
   {
@@ -57,7 +67,7 @@ export const postpartumRoutines: Routine[] = [
     category: 'diastasis',
     durationMinutes: 12,
     intensity: 'Restaurador',
-    image: '/src/assets/images/postpartum_rehab_hero_1794104204365.jpg',
+    image: heroImg,
     description: 'Una sesión fundamental para despertar la musculatura profunda del abdomen. Diseñada para proteger la línea alba, cerrar diástasis y restablecer el soporte visceral sin crujidos ni presión intraabdominal excesiva.',
     suitableFromWeek: 2,
     targetMuscles: ['Transverso abdominal', 'Multífidos', 'Suelo pélvico profundo', 'Diafragma torácico'],
@@ -110,7 +120,7 @@ export const postpartumRoutines: Routine[] = [
     category: 'suelo-pelvico',
     durationMinutes: 10,
     intensity: 'Suave',
-    image: '/src/assets/images/postpartum_breath_serene_1794104205346.jpg',
+    image: breathImg,
     description: 'Enfocado tanto en el tono como en la elasticidad del periné. Un suelo pélvico sano no es un músculo rígido, sino uno capaz de contraerse con fuerza y relajarse por completo al inhalar.',
     suitableFromWeek: 3,
     targetMuscles: ['Elevador del ano', 'Pubococcígeo', 'Esfínteres', 'Fascia endopélvica'],
@@ -156,7 +166,7 @@ export const postpartumRoutines: Routine[] = [
     category: 'movilidad',
     durationMinutes: 14,
     intensity: 'Restaurador',
-    image: '/src/assets/images/postpartum_mobility_stretch_1794104205243.jpg',
+    image: mobilityImg,
     description: 'Las largas horas sosteniendo al bebé en brazos, amamantando o acunando provocan un acortamiento del pectoral y sobrecarga en trapecios. Esta secuencia devuelve espacio a tu caja torácica.',
     suitableFromWeek: 1,
     targetMuscles: ['Romboides', 'Pectoral menor', 'Erectores espinales', 'Flexores de cadera'],
@@ -200,7 +210,7 @@ export const postpartumRoutines: Routine[] = [
     category: 'cesarea',
     durationMinutes: 11,
     intensity: 'Restaurador',
-    image: '/src/assets/images/postpartum_tea_nourish_1794104205057.jpg',
+    image: teaImg,
     description: 'Protocolo de fisioterapia obstétrica para desensibilizar los tejidos, mejorar la circulación perilesional y evitar adherencias miofasciales que puedan causar dolor lumbar o tirantez a largo plazo.',
     suitableFromWeek: 4,
     targetMuscles: ['Fascia de la cicatriz', 'Psoas ilíaco', 'Transverso inferior', 'Cadera'],
@@ -241,7 +251,7 @@ export const strengthRoutines: Routine[] = [
     durationMinutes: 20,
     intensity: 'Intermedio',
     equipment: 'ligas',
-    image: '/src/assets/images/strength_resistance_bands_1794105707060.jpg',
+    image: bandsImg,
     description: 'Rutina diseñada con resistencia elástica progresiva para tonificar piernas y glúteos sin sobrecargar la zona lumbar, estabilizando la pelvis frente a las exigencias de la maternidad cotidiana.',
     purpose: 'Tonificar piernas y glúteos sin sobrecargar la zona lumbar.',
     suitableFromWeek: 6,
@@ -297,7 +307,7 @@ export const strengthRoutines: Routine[] = [
     durationMinutes: 18,
     intensity: 'Intermedio',
     equipment: 'mancuernas',
-    image: '/src/assets/images/strength_light_dumbbells_1794105707358.jpg',
+    image: dumbbellsImg,
     description: 'El antídoto específico para aliviar la fatiga de cargar al bebé y recuperar tono en los brazos. Fortalece la espalda alta y contrarresta el encorvamiento postural con mancuernas ligeras.',
     purpose: 'Aliviar la fatiga de cargar al bebé y recuperar tono en los brazos.',
     suitableFromWeek: 6,
@@ -352,7 +362,7 @@ export const strengthRoutines: Routine[] = [
     durationMinutes: 22,
     intensity: 'Avanzado',
     equipment: 'mixto',
-    image: '/src/assets/images/strength_fullbody_lunges_1794105707175.jpg',
+    image: lungesImg,
     description: 'Sesión integral para aumentar la resistencia cardiovascular y la quema calórica de forma segura, combinando zancadas, plancha modificada con control respiratorio y sentadillas coordinadas.',
     purpose: 'Aumentar la resistencia cardiovascular y la quema calórica de forma segura.',
     suitableFromWeek: 8,
@@ -409,7 +419,7 @@ export const clinicalGuides: GuideArticle[] = [
     subtitle: 'Prevención de adherencias, desensibilización y salud fascial',
     category: 'cicatriz',
     readTime: '5 min de lectura',
-    image: '/src/assets/images/postpartum_tea_nourish_1794104205057.jpg',
+    image: teaImg,
     summary: 'Aprende cuándo iniciar el masaje de cicatriz, cómo reconocer adherencias profundas y cómo recuperar la sensibilidad normal en la zona pélvica.',
     content: [
       {
@@ -438,7 +448,7 @@ export const clinicalGuides: GuideArticle[] = [
     subtitle: 'La verdad sobre la separación abdominal fisiológica tras el parto',
     category: 'movimiento',
     readTime: '6 min de lectura',
-    image: '/src/assets/images/postpartum_rehab_hero_1794104204365.jpg',
+    image: heroImg,
     summary: 'La separación abdominal es 100% natural al final del embarazo. Lo verdaderamente importante no es el espacio en dedos, sino la capacidad de generar tensión en la línea alba.',
     content: [
       {
@@ -465,7 +475,7 @@ export const clinicalGuides: GuideArticle[] = [
     subtitle: 'Técnicas sencillas para amamantar o dar biberón sin dolor',
     category: 'lactancia',
     readTime: '4 min de lectura',
-    image: '/src/assets/images/postpartum_mobility_stretch_1794104205243.jpg',
+    image: mobilityImg,
     summary: 'Consejos posturales para evitar la clásica cifosis de la madre reciente y aliviar la tensión cervical.',
     content: [
       {
@@ -487,7 +497,7 @@ export const clinicalGuides: GuideArticle[] = [
     subtitle: 'Nutrición caliente para reparar tejidos conectivos y sostener la energía',
     category: 'nutricion',
     readTime: '5 min de lectura',
-    image: '/src/assets/images/postpartum_tea_nourish_1794104205057.jpg',
+    image: teaImg,
     summary: 'La sabiduría ancestral y la bioquímica coinciden: el puerperio necesita alimentos cálidos, de fácil asimilación, ricos en glicina, prolina y micronutrientes.',
     content: [
       {
@@ -509,7 +519,7 @@ export const clinicalGuides: GuideArticle[] = [
     subtitle: 'Guía de tranquilidad médica para saber cuándo contactar a un profesional',
     category: 'alerta',
     readTime: '3 min de lectura',
-    image: '/src/assets/images/postpartum_breath_serene_1794104205346.jpg',
+    image: breathImg,
     summary: 'Aprende a diferenciar el cansancio y los entuertos habituales de complicaciones que requieren valoración médica presencial.',
     content: [
       {

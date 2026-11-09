@@ -5,6 +5,7 @@ import { playSereneChime } from '../utils/audioChime';
 interface BreathingModalProps {
   isOpen: boolean;
   onClose: () => void;
+  onAddMinutes?: (minutes: number) => void;
 }
 
 type BreathingPattern = 'pelvica' | 'calma' | 'coherencia';
@@ -42,10 +43,11 @@ const PATTERNS: Record<BreathingPattern, PatternConfig> = {
   },
 };
 
-export const BreathingModal: React.FC<BreathingModalProps> = ({ isOpen, onClose }) => {
+export const BreathingModal: React.FC<BreathingModalProps> = ({ isOpen, onClose, onAddMinutes }) => {
   const [selectedPattern, setSelectedPattern] = useState<BreathingPattern>('pelvica');
   const [phase, setPhase] = useState<'inhale' | 'hold' | 'exhale'>('inhale');
   const [secondsInPhase, setSecondsInPhase] = useState(0);
+  const [totalSecondsActive, setTotalSecondsActive] = useState(0);
   const [isActive, setIsActive] = useState(true);
   const [soundOn, setSoundOn] = useState(true);
   const [cycleCount, setCycleCount] = useState(0);
@@ -56,6 +58,7 @@ export const BreathingModal: React.FC<BreathingModalProps> = ({ isOpen, onClose 
     if (!isOpen || !isActive) return;
 
     const interval = setInterval(() => {
+      setTotalSecondsActive((s) => s + 1);
       setSecondsInPhase((prev) => {
         const next = prev + 1;
         if (phase === 'inhale') {
@@ -89,6 +92,14 @@ export const BreathingModal: React.FC<BreathingModalProps> = ({ isOpen, onClose 
 
     return () => clearInterval(interval);
   }, [isOpen, isActive, phase, pattern, soundOn]);
+
+  const handleFinishAndClose = () => {
+    const elapsedMinutes = Math.max(cycleCount > 0 ? 1 : 0, Math.ceil(totalSecondsActive / 60));
+    if (elapsedMinutes > 0 && onAddMinutes) {
+      onAddMinutes(elapsedMinutes);
+    }
+    onClose();
+  };
 
   if (!isOpen) return null;
 
@@ -195,12 +206,13 @@ export const BreathingModal: React.FC<BreathingModalProps> = ({ isOpen, onClose 
         </div>
 
         {/* Bottom Controls */}
-        <div className="pt-4 border-t border-[#dbc1ba]/30 flex items-center justify-center gap-4">
+        <div className="pt-4 border-t border-[#dbc1ba]/30 flex flex-wrap items-center justify-center gap-3">
           <button
             onClick={() => {
               setPhase('inhale');
               setSecondsInPhase(0);
               setCycleCount(0);
+              setTotalSecondsActive(0);
             }}
             className="w-10 h-10 rounded-full bg-[#f2ede9] hover:bg-[#ece7e3] text-[#55433e] flex items-center justify-center transition-colors cursor-pointer"
             title="Reiniciar contador"
@@ -210,10 +222,17 @@ export const BreathingModal: React.FC<BreathingModalProps> = ({ isOpen, onClose 
 
           <button
             onClick={() => setIsActive(!isActive)}
-            className="h-11 px-6 rounded-full bg-[#96432b] hover:bg-[#803722] text-white text-xs font-semibold flex items-center gap-2 shadow-sm transition-transform active:scale-[0.98] cursor-pointer"
+            className="h-11 px-5 rounded-full bg-[#96432b] hover:bg-[#803722] text-white text-xs font-semibold flex items-center gap-2 shadow-sm transition-transform active:scale-[0.98] cursor-pointer"
           >
             {isActive ? <Pause className="w-4 h-4 fill-white" /> : <Play className="w-4 h-4 fill-white" />}
-            <span>{isActive ? 'Pausar Respiración' : 'Reanudar'}</span>
+            <span>{isActive ? 'Pausar' : 'Reanudar'}</span>
+          </button>
+
+          <button
+            onClick={handleFinishAndClose}
+            className="h-11 px-5 rounded-full bg-[#41674c] hover:bg-[#34533d] text-white text-xs font-semibold flex items-center gap-2 shadow-sm transition-transform active:scale-[0.98] cursor-pointer"
+          >
+            <span>Guardar & Salir ({Math.max(1, Math.ceil(totalSecondsActive / 60))} min)</span>
           </button>
         </div>
       </div>
